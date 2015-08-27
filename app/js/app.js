@@ -1,161 +1,107 @@
-define('TreeDB', ['backbone-min', 'backbone.localStorage-min'], function(Backbone, LocalStorage){
+define('TreeDB', function(){
+	"use strict";
+
+	function TreeDB() {
+    console.log('TemplateCtrlr loaded');
+	};
+
+	TreeDB.prototype.get = function(id) {
+		return localStorage.getItem("element-" + id);
+	};
 	
-	var Tree = Backbone.Model.extend({
-    defaults: function() {
-      return {
-				id: 1,
-        title: 'Tree element',
-        root: 0,
-        submenus: []
-      };
-    },
-  });
-  
-  var TreeElements = Backbone.Collection.extend({
+	TreeDB.prototype.remove = function(id) {
+		return localStorage.removeItem("element-" + id);
+	};
+	
+	TreeDB.prototype.set = function(id, data) {
+	
+		//Verify data
+	
+		return localStorage.setItem("element-" + id, JSON.stringify(data));
+	};
+	
+	TreeDB.prototype.move = function(id, root, order) {
+		console.log(localStorage);
+	};
+	
+	TreeDB.prototype.getAll = function() {
+		return localStorage;
+	};
 
-    model: Tree,
-    localStorage: new LocalStorage("tree")
- 
-  });
-  
-  return TreeElements;
+	return TreeDB;
+
 });
 
-define('Tree', ['backbone-min', 'backbone.localStorage-min', 'TreeDB'], function(Backbone, LocalStorage, TreeDB){
+define('TreeEvents', function() {
+	"use strict";
 
-	var Todos = new TreeDB();
+	function TreeEvents() {
+    console.log('TemplateCtrlr loaded');
+    
+    this.add();
+	};
 
-	var TreeView = Backbone.View.extend({
+	TreeEvents.prototype.add = function() {
+		var elements = document.getElementById('tree-root').querySelectorAll('li');
+		for(var i = 0; i < elements.length; i++) {
+			elements[i].querySelector('i').addEventListener('click', function(){
+				alert(this.getAttribute('class'));
+			});
+		}
+	}
 
-    tagName:  "li",
-
-    template: _.template($('#item-template').html()),
-
-    events: {
-      "click .toggle"   : "toggleDone",
-      "dblclick .view"  : "edit",
-      "click a.destroy" : "clear",
-      "keypress .edit"  : "updateOnEnter",
-      "blur .edit"      : "close"
-    },
-
-    initialize: function() {
-      this.listenTo(this.model, 'change', this.render);
-      this.listenTo(this.model, 'destroy', this.remove);
-    },
- 
-    render: function() {
-      this.$el.html(this.template(this.model.toJSON()));
-      this.$el.toggleClass('done', this.model.get('done'));
-      this.input = this.$('.edit');
-      return this;
-    },
-
-    toggleDone: function() {
-      this.model.toggle();
-    },
- 
-    edit: function() {
-      this.$el.addClass("editing");
-      this.input.focus();
-    },
-
-    close: function() {
-      var value = this.input.val();
-      if (!value) {
-        this.clear();
-      } else {
-        this.model.save({title: value});
-        this.$el.removeClass("editing");
-      }
-    },
- 
-    updateOnEnter: function(e) {
-      if (e.keyCode == 13) this.close();
-    },
-
-    clear: function() {
-      this.model.destroy();
-    }
-
-  });
-  
-    var AppView = Backbone.View.extend({
-
-    el: $("#todoapp"),
-
-    statsTemplate: _.template($('#stats-template').html()),
-
-    events: {
-      "keypress #new-todo":  "createOnEnter",
-      "click #clear-completed": "clearCompleted",
-      "click #toggle-all": "toggleAllComplete"
-    },
-
-    initialize: function() {
-
-      this.input = this.$("#new-todo");
-      this.allCheckbox = this.$("#toggle-all")[0];
-
-      this.listenTo(Todos, 'add', this.addOne);
-      this.listenTo(Todos, 'reset', this.addAll);
-      this.listenTo(Todos, 'all', this.render);
-
-      this.footer = this.$('footer');
-      this.main = $('#main');
-
-      Todos.fetch();
-    },
-
-    render: function() {
-      var done = Todos.done().length;
-      var remaining = Todos.remaining().length;
-
-      if (Todos.length) {
-        this.main.show();
-        this.footer.show();
-        this.footer.html(this.statsTemplate({done: done, remaining: remaining}));
-      } else {
-        this.main.hide();
-        this.footer.hide();
-      }
-
-      this.allCheckbox.checked = !remaining;
-    },
- 
-    addOne: function(todo) {
-      var view = new TreeView({model: todo});
-      this.$("#todo-list").append(view.render().el);
-    },
-
-    addAll: function() {
-      Todos.each(this.addOne, this);
-    },
-
-    createOnEnter: function(e) {
-      if (e.keyCode != 13) return;
-      if (!this.input.val()) return;
-
-      Todos.create({title: this.input.val()});
-      this.input.val('');
-    },
-
-    clearCompleted: function() {
-      _.invoke(Todos.done(), 'destroy');
-      return false;
-    },
-
-    toggleAllComplete: function () {
-      var done = this.allCheckbox.checked;
-      Todos.each(function (todo) { todo.save({'done': done}); });
-    }
-
-  });
-  
-  return AppView;
+	return TreeEvents;
+	
 });
 
-require(['Tree'], function(Tree){
-	var tree = new Tree();
-	console.log(tree);
+define('TreeController', ['underscore'], function(_) {
+	"use strict";
+
+	function TreeController() {
+    console.log('TemplateCtrlr loaded');
+	};
+
+	TreeController.prototype.getTemplate = function(id) {
+		var template = (document.getElementById(id)) ? 
+		document.getElementById(id).innerHTML : 
+		'Temaplte not found. ID: ' + id;
+		
+		return template;
+	};
+
+	TreeController.prototype.render = function(options) {
+		var compile = _.template(this.getTemplate(options.id));
+		var template = compile((typeof options.data != typeof undefined) ? options.data : {});
+		(typeof options.completed === 'function') ? options.completed.call(this, template) : false;
+	};
+
+	return TreeController;
+	
 });
+
+require(
+	['TreeController', 'TreeDB', 'TreeEvents'], 
+	function(TreeController, TreeDB, TreeEvents)
+	{
+		
+			var tree = new TreeController();
+			var treeData = new TreeDB();
+			var treeEvents = new TreeEvents();
+			
+			treeData.set(treeData.getAll().length++, {
+				title: 'Test',
+				root: 1,
+				order: 1
+			});
+			
+			for ( var i = 1, len = treeData.getAll().length; i < len; ++i ) {
+				tree.render({
+					id:'treeElement',
+					data: JSON.parse(treeData.get(i)),
+					completed: function(template){
+						console.log(template);
+					}
+				});
+			}
+	}
+);
