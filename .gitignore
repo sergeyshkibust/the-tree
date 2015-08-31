@@ -3,7 +3,4 @@ logs
 *.log
 npm-debug.log*
 
-node_modules*
-*bootstrap*
-*require*
-*font*
+node_modules/*
