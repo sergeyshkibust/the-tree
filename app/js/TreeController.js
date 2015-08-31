@@ -9,7 +9,7 @@ define('TreeController', ['underscore', 'ApiCtrlr'], function(_, ApiCtrlr) {
 
     TreeController.prototype.getTemplate = function(id, returnTemplate) {
         this.api.get({
-            url: '/templates/' + id + '.ejs',
+            url: './templates/' + id + '.ejs',
             complete: function(template) {
                 returnTemplate.call(this, template);
             }
