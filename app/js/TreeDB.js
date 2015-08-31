@@ -1,4 +1,4 @@
-define('TreeDB', function(){
+define('TreeDB', ['underscore'], function(_){
 	"use strict";
 
 	function TreeDB() {
@@ -6,33 +6,55 @@ define('TreeDB', function(){
 	};
 
 	TreeDB.prototype.get = function(id) {
-		return localStorage.getItem("element-" + id);
+		var data = JSON.parse(localStorage.getItem("elements"));
+		var el = _.find(data, function(obj) { return obj.id == id })
+		return el;
 	};
 
 	TreeDB.prototype.remove = function(id) {
-		return localStorage.removeItem("element-" + id);
+		var el = this.get(id);
+
+		var elements = this.getAll();
+		var newElements = [];
+
+		for(var i = 0; i < elements.length; i++) {
+			if(elements[i].children.indexOf(el.id) > -1) {
+				elements[i].children.splice(elements[i].children.indexOf(el.id), 1);
+			}
+			if(elements[i].id != id && elements[i].parent != id) {
+				newElements.push(elements[i]);
+			}
+		}
+
+		return localStorage.setItem("elements", JSON.stringify(newElements));
 	};
 
 	TreeDB.prototype.add = function(data) {
-
-		//Verify data
-		var id = this.getAll().length + 1;
-		return localStorage.setItem("element-" + id, JSON.stringify(data));
+		var elements = this.getAll();
+		for(var i = 0; i < elements.length; i++) {
+			if(elements[i].id == data.parent) {
+				elements[i].children.push(data.id);
+			}
+		}
+		elements.push(data);
+		return localStorage.setItem("elements", JSON.stringify(elements));
 	};
 
 	TreeDB.prototype.change = function(id, data) {
+		var elements = this.getAll();
+		var newElements = [];
 
-		//Verify data
-
-		return localStorage.setItem("element-" + id, JSON.stringify(data));
-	};
-
-	TreeDB.prototype.move = function(id, root, order) {
-		console.log(localStorage);
+		for(var i = 0; i < elements.length; i++) {
+			if(elements[i].id == id) {
+				elements[i].title = data;
+			}
+			newElements.push(elements[i]);
+		}
+		return localStorage.setItem("elements", JSON.stringify(newElements));
 	};
 
 	TreeDB.prototype.getAll = function() {
-		return localStorage;
+		return JSON.parse(localStorage.getItem("elements")) || [];
 	};
 
 	return TreeDB;

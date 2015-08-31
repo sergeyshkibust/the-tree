@@ -20,75 +20,38 @@
     <![endif]-->
   </head>
   <body>
-  	<div class="wrapper">
-		<ul class="list-group" id="tree-root" data-root="0">
-			<li data-level="1" class="list-group-item">
-				<span><i class="fa fa-folder-open"></i>Title</span>
-				<ul class="list-group" data-root="1">
-					<li class="list-group-item">
-						<span><i class="fa fa-folder"></i>Title</span>
-					</li>
-					<li class="list-group-item">
-						<span><i class="fa fa-folder-open"></i>Title</span>
-						<ul class="list-group">
-							<li class="list-group-item">
-								<span><i class="fa fa-folder-open"></i>Title</span>
-								<ul class="list-group">
-									<li class="list-group-item">
-										<span><i class="fa fa-folder"></i>Title</span>
-									</li>
-								</ul>
-							</li>
-						</ul>
-					</li>
-					<li class="list-group-item">
-						<span><i class="fa fa-folder"></i>Title</span>
-					</li>
-				</ul>
-			</li>
-			<li class="list-group-item">
-				<span><i class="fa fa-folder"></i>Title</span>
-			</li>
-		</ul>
-	</div>
+    <div id="wrapper">
+    </div>
 
-	 <!-- Modal -->
-	<div class="modal fade" id="myModal" role="dialog">
-		<div class="modal-dialog modal-sm">
-			<div class="modal-content">
-				<div class="modal-header">
-					<button type="button" class="close" data-dismiss="modal">&times;</button>
-					<h4 class="modal-title">Modal Header</h4>
-				</div>
-				<div class="modal-body">
-					<p>This is a small modal.</p>
-				</div>
-				<div class="modal-footer">
-					<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-				</div>
-			</div>
-		</div>
-	</div>
+    <!-- Modal -->
+    <div class="modal fade" id="myModal" role="dialog">
+      <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+            <h4 class="modal-title">Modal Header</h4>
+          </div>
+          <div class="modal-body">
+            <p>This is a small modal.</p>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+          </div>
+        </div>
+      </div>
+    </div>
 
-	<script data-main="/app" src="/js/require.js"></script>
-	<script id="treeElement" type="text/template">
-		<li class="list-group-item">
-			<span><i class="fa fa-folder"></i><%=title%></span>
-			<% if (root > 0) { %>
-			<ul class="list-group" data-root="<%=root%>"></ul>
-			<% } %>
-		</li>
-	</script>
-	<script>
-		requirejs.config({
-		 	baseUrl: 'js',
-			waitSeconds: 500,
-			shim: {
-		  	underscore: {
-				exports: '_'
-				}
-			}
-		});
-	</script>
+    <script data-main="/app" src="/js/require.js"></script>
+    <script>
+    	requirejs.config({
+    	 	baseUrl: 'js',
+    		waitSeconds: 500,
+    		shim: {
+    	  	underscore: {
+    			exports: '_'
+    			}
+    		}
+    	});
+    </script>
   </body>
 </html>

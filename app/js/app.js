@@ -7,20 +7,40 @@ require(
 			var treeData = new TreeDB();
 			var treeEvents = new TreeEvents();
 
-			treeData.add({
-				title: 'Test',
-				root: 1,
-				order: 1
-			});
+			//Demo data
+			// treeData.add({
+			// 		"id": 1,
+			//     "title": "First Root Element",
+			//     "parent": 0,
+			//     "children": [2,3]
+		  // });
+			// treeData.add({
+		  //   "id": 2,
+		  //   "title": "Second Element",
+		  //   "parent": 1,
+		  //   "children": []
+		  // });
+			// treeData.add({
+		  //   "id": 3,
+		  //   "title": "Third Element",
+		  //   "parent": 1,
+		  //   "children": [4]
+		  // });
+			// treeData.add({
+		  //   "id": 4,
+		  //   "title": "Last Element",
+		  //   "parent": 3,
+		  //   "children": []
+		  // });
+			//Demo data
 
-			for ( var i = 1, len = treeData.getAll().length; i < len; ++i ) {
-				tree.render({
-					id:'treeElement',
-					data: JSON.parse(treeData.get(i)),
-					completed: function(template){
-						console.log(template);
-					}
-				});
-			}
+			tree.render({
+				id:'tree-root',
+				data: treeData.getAll(),
+				complete: function(template){
+					document.getElementById('wrapper').insertAdjacentHTML('afterbegin', template);
+					treeEvents.create(document.getElementById('wrapper'));
+				}
+			});
 	}
 );
