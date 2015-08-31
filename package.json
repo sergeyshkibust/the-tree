@@ -3,12 +3,10 @@
   "version": "1.0.0",
   "description": "Demo project of javascript tree menu. With editor and covered with tests.",
   "main": "server.js",
-  "directories": {
-    "test": "test"
-  },
+  "directories": {},
   "scripts": {
-    "test": "mocha",
-    "start": "nodejs server.js"
+    "start": "nodejs server.js",
+    "build": "nodejs build.js"
   },
   "repository": {
     "type": "git",
@@ -17,9 +15,7 @@
   "keywords": [
     "javascript",
     "tree",
-    "chai",
-    "mocha",
-    "backbone"
+    "mocha"
   ],
   "author": "Sergey Shkibust",
   "license": "MIT",
@@ -27,19 +23,14 @@
     "url": "https://github.com/sergeyshkibust/the-tree/issues"
   },
   "homepage": "https://github.com/sergeyshkibust/the-tree#readme",
-  "devDependencies": {
-    "chai": "^3.2.0",
-    "mocha": "^2.2.5",
-    "should": "^7.1.0",
-    "supertest": "^1.1.0"
-  },
+  "devDependencies": {},
   "dependencies": {
-    "backbone": "^1.2.2",
-    "backbone.localstorage": "^1.1.16",
     "bootstrap": "^3.3.5",
     "connect": "^3.4.0",
-    "jquery": "^2.1.4",
+    "font-awesome": "^4.4.0",
+    "mocha": "^2.2.5",
     "requirejs": "latest",
-    "serve-static": "^1.10.0"
+    "serve-static": "^1.10.0",
+    "underscore": "latest"
   }
 }
