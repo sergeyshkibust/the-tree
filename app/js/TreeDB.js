@@ -2,7 +2,7 @@ define('TreeDB', function(){
 	"use strict";
 
 	function TreeDB() {
-    console.log('TreeDB loaded');
+    	console.log('TreeDB loaded');
 	};
 
 	TreeDB.prototype.get = function(id) {
@@ -13,7 +13,14 @@ define('TreeDB', function(){
 		return localStorage.removeItem("element-" + id);
 	};
 
-	TreeDB.prototype.set = function(id, data) {
+	TreeDB.prototype.add = function(data) {
+
+		//Verify data
+		var id = this.getAll().length + 1;
+		return localStorage.setItem("element-" + id, JSON.stringify(data));
+	};
+
+	TreeDB.prototype.change = function(id, data) {
 
 		//Verify data
 

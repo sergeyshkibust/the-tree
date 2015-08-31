@@ -7,7 +7,7 @@ require(
 			var treeData = new TreeDB();
 			var treeEvents = new TreeEvents();
 
-			treeData.set(treeData.getAll().length++, {
+			treeData.add({
 				title: 'Test',
 				root: 1,
 				order: 1

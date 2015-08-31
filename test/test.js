@@ -9,15 +9,19 @@ requirejs.config({
 
 var TreeController = requirejs('TreeController');
 var TreeDB = requirejs('TreeDB');
-var TreeEvents = requirejs('TreeEvents');
+//var TreeEvents = requirejs('TreeEvents');
 
 var tree = new TreeController();
 var treeDB = new TreeDB();
-var treeEvents = new TreeEvents();
+//var treeEvents = new TreeEvents();
 
     describe('Tree', function () {
-      it('description', function (done) {
-        tree.getTemplate();
+      it('add new element', function (done) {
+        treeDB.add({
+            title: 'Test',
+            root: 0,
+            order: 1
+        });
         done();
       });
     });
