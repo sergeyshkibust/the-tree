@@ -8,12 +8,14 @@ require(
 			var treeEvents = new TreeEvents();
 
 			//Demo data
-			// treeData.add({
-			// 		"id": 1,
-			//     "title": "First Root Element",
-			//     "parent": 0,
-			//     "children": [2,3]
-		  // });
+			if(treeData.getAll().length == 0){
+				treeData.add({
+						"id": 1,
+				    "title": "First Root Element",
+				    "parent": 0,
+				    "children": []
+			  });
+			}
 			// treeData.add({
 		  //   "id": 2,
 		  //   "title": "Second Element",
