@@ -17,10 +17,18 @@
             ignoreLeaks: true,
             asyncOnly: true
         });
-        mocha.run();
     </script>
     <script src="js/test.js"></script>
     <script>
+        requirejs.config({
+            baseUrl: 'js',
+            waitSeconds: 500,
+            shim: {
+                underscore: {
+                    exports: '_'
+                }
+            }
+        });
         mocha.run();
     </script>
 </body>
