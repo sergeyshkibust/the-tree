@@ -54,13 +54,13 @@ define('TreeDB', function() {
         return localStorage.setItem("elements", JSON.stringify(elements));
     };
 
-    TreeDB.prototype.change = function(id, data) {
+    TreeDB.prototype.change = function(key, id, data) {
         var elements = this.getAll();
         var newElements = [];
 
         for (var i = 0; i < elements.length; i++) {
             if (elements[i].id == id) {
-                elements[i].title = data;
+                elements[i][key] = data;
             }
             newElements.push(elements[i]);
         }

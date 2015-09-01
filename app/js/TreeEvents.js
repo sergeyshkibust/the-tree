@@ -8,27 +8,27 @@ define('TreeEvents', ['TreeDB'], function(TreeDB) {
 
     TreeEvents.prototype.create = function(parent, rebuild) {
         var elements = parent.querySelectorAll('li.list-group-item');
-        var treeEvents = this;
+        var that = this;
         for (var i = 0; i < elements.length; i++) {
             elements[i].removeEventListener();
             elements[i].addEventListener('click', function(e) {
                 e.stopPropagation();
                 if (e.target.nodeName == 'I') {
                     if (e.target.getAttribute('class').indexOf('folder') > -1) {
-                        // console.log(e.target);
-                        treeEvents.toggle(e.target);
-                        //rebuild.call(this);
+                        that.toggle(e.target);
+                        rebuild.call(this);
                     }
-                //     if (e.target.getAttribute('class').indexOf('trash') > -1) {
-                //         if (confirm('Are you shure?')) {
-                //             treeEvents.delete(e.target);
-                //         }
-                //     }
+                    if (e.target.getAttribute('class').indexOf('trash') > -1) {
+                        if (confirm('Are you shure?')) {
+                            that.treeDB.remove(e.target.parentNode.getAttribute('data-id'));
+                            rebuild.call(this);
+                        }
+                    }
                     if (e.target.getAttribute('class').indexOf('plus') > -1) {
                         var title = prompt("Please enter title", "Element title");
 
                         if (title != null) {
-                            treeEvents.add(e.target, title);
+                            that.add(e.target, title);
                             rebuild.call(this);
                         }
                     }
@@ -38,7 +38,7 @@ define('TreeEvents', ['TreeDB'], function(TreeDB) {
             elements[i].querySelector('.text').addEventListener('dblclick', function(e) {
                 e.stopPropagation();
                 if (e.target.getAttribute('class').indexOf('text') > -1) {
-                    treeEvents.editor(this);
+                    that.editor(this);
                 }
             });
         }
@@ -59,25 +59,24 @@ define('TreeEvents', ['TreeDB'], function(TreeDB) {
     TreeEvents.prototype.editor = function(element) {
         var that = this;
         if (element.parentNode.getAttribute('data-id') > 0) {
-            element.innerHTML = '<input type="text" id="changed" value="' + element.innerText + '""/><input type="button" value="save" id="save"/>';
+            var oldTitle = element.innerText;
+            element.innerHTML = '<input type="text" id="changed" value="' + element.innerText + '""/><input type="button" value="save" id="save"/><input type="button" value="cancel" id="cancel"/>';
 
             element.querySelector('#save').addEventListener('click', function(e) {
                 var newTitle = element.querySelector('#changed').value;
                 if (newTitle.length > 0) {
-                    that.treeDB.change(element.parentNode.getAttribute('data-id'), newTitle);
+                    that.treeDB.change('title', element.parentNode.getAttribute('data-id'), newTitle);
                     element.innerText = newTitle;
                 } else {
                     alert('Please enter title!');
                 }
             });
+            element.querySelector('#cancel').addEventListener('click', function(e) {
+                element.innerText = oldTitle;
+            });
         } else {
             alert('This element can\'t be edited!');
         }
-    }
-
-    TreeEvents.prototype.delete = function(element) {
-        this.treeDB.remove(element.getAttribute('data-id'));
-        element.remove();
     }
 
     TreeEvents.prototype.toggle = function(element) {
@@ -85,12 +84,12 @@ define('TreeEvents', ['TreeDB'], function(TreeDB) {
             el = 'fa fa-folder',
             elOpen = '-open',
             parentEl = element.parentNode;
-            console.log(parentEl);
+
         if (parentEl.querySelector('i.fa-folder-open')) {
-            parentEl.classList.remove('open');
+            that.treeDB.change('state', parentEl.getAttribute('data-id'), 0);
             parentEl.querySelector('i.fa-folder-open').setAttribute('class', el);
         } else {
-            parentEl.classList.add('open');
+            that.treeDB.change('state', parentEl.getAttribute('data-id'), 1);
             parentEl.querySelector('i.fa-folder').setAttribute('class', el + elOpen);
         }
     }

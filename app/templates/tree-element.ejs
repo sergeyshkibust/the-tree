@@ -1,6 +1,6 @@
 <% _.each(data,function(element) { %>
-    <li class="list-group-item" data-id="<%=element.id%>">
-      <i class="fa fa-folder"></i>
+    <li class="list-group-item <% if(element.state) { %>open<% } %>" data-id="<%=element.id%>">
+      <i class="fa fa-folder<% if(element.state) { %>-open<% } %>"></i>
       <span class="label label-default"><%=element.children.length%></span>
       <span class="text"><%=element.title%></span>
       <i class="fa fa-plus"></i>

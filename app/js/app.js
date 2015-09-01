@@ -10,6 +10,7 @@ require(
                 "id": 1,
                 "title": "First Root Element",
                 "parent": 0,
+                "state": 0,
                 "children": []
             });
         }
