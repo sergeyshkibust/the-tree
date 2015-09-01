@@ -1,14 +1,12 @@
 require(
-    ['TreeController', 'TreeDB', 'TreeEvents'],
-    function(TreeController, TreeDB, TreeEvents) {
+    ['TreeController', 'TreeDB'],
+    function(TreeController, TreeDB) {
 
         var tree = new TreeController();
-        var treeData = new TreeDB();
-        var treeEvents = new TreeEvents();
-
+        var treeDB = new TreeDB();
         //Demo data
-        if (treeData.getAll().length == 0) {
-            treeData.add({
+        if (treeDB.getAll().length == 0) {
+            treeDB.add({
                 "id": 1,
                 "title": "First Root Element",
                 "parent": 0,
@@ -17,13 +15,6 @@ require(
         }
         //Demo data
 
-        tree.render({
-            id: 'tree-root',
-            data: treeData.getAll(),
-            complete: function(template) {
-                document.getElementById('wrapper').insertAdjacentHTML('afterbegin', template);
-                treeEvents.create(document.getElementById('wrapper'));
-            }
-        });
+        tree.setup();
     }
 );

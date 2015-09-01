@@ -14,6 +14,17 @@ define('TreeDB', function() {
         }
     };
 
+    TreeDB.prototype.getByParent = function(id) {
+        var elements = JSON.parse(localStorage.getItem("elements"));
+        var newElements = [];
+        for (var i = 0; i < elements.length; i++) {
+            if (elements[i].parent == id) {
+                newElements.push(elements[i]);
+            }
+        }
+        return newElements;
+    };
+
     TreeDB.prototype.remove = function(id) {
         var el = this.get(id);
 

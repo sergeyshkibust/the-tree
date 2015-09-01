@@ -1,10 +1,13 @@
 <ul data-parent="0" class="list-group">
-<% _.each(data,function(element) { %>
-  <%  if(element.parent == 0) { %>
-    <li class="list-group-item" data-id="<%=element.id%>">
-      <i class="fa fa-folder"></i><span><%=element.title%></span><i class="fa fa-plus"></i>
-      <ul class="list-group" data-parent="<%=element.id%>"></ul>
-    </li>
-  <% } %>
-<% }); %>
+	<% _.each(data,function(element) { %>
+	  <%  if(element.parent == 0) { %>
+	    <li class="list-group-item" data-id="<%=element.id%>">
+	      <i class="fa fa-folder"></i>
+	      <span class="label label-default"><%=element.children.length%></span>
+	      <span class="text"><%=element.title%></span>
+	      <i class="fa fa-plus"></i>
+	      <ul class="list-group" data-parent="<%=element.id%>"></ul>
+	    </li>
+	  <% } %>
+	<% }); %>
 </ul>

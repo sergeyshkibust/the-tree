@@ -1,5 +1,5 @@
 body {
-	background: #245072;
+	background: #2c3e50;
 
 	-webkit-touch-callout: none;
 	-webkit-user-select: none;
@@ -15,18 +15,26 @@ body {
 .list-group {
 	margin-bottom: 0;
 }
+#wrapper .list-group-item .list-group {
+	display: none;
+}
+
+#wrapper .list-group-item.open > .list-group {
+	display: block !important;
+}
+
 .list-group-item {
 	border: 0;
 	background: none;
 	padding: 0px 15px;
 }
 .list-group-item span {
-	color: #A7CBEE;
+	color: #ecf0f1;
 	font-size: 20px;
 	line-height: 30px;
 }
 .list-group-item i {
-	color: #87c6c9;
+	color: #95a5a6;
 	width: 30px;
 	height: 30px;
 	text-align: center;
@@ -35,13 +43,13 @@ body {
 	cursor: pointer;
 }
 .list-group-item .fa-plus {
-	color: #36a415;
+	color: #27ae60;
 	font-size: 20px;
 	width: 20px;
 	padding-bottom: 5px;
 }
 .list-group-item .fa-trash {
-	color: #a41519;
+	color: #c0392b;
 	font-size: 20px;
 	width: 20px;
 	padding-bottom: 5px;

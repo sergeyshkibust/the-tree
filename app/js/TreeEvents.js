@@ -1,14 +1,13 @@
-define('TreeEvents', ['TreeDB', 'TreeController'], function(TreeDB, TreeController) {
+define('TreeEvents', ['TreeDB'], function(TreeDB) {
     "use strict";
 
     function TreeEvents() {
         console.log('TreeEvents loaded');
         this.treeDB = new TreeDB();
-        this.tree = new TreeController();
     };
 
-    TreeEvents.prototype.create = function(parent) {
-        var elements = parent.querySelectorAll('li');
+    TreeEvents.prototype.create = function(parent, rebuild) {
+        var elements = parent.querySelectorAll('li.list-group-item');
         var treeEvents = this;
         for (var i = 0; i < elements.length; i++) {
             elements[i].removeEventListener();
@@ -16,25 +15,31 @@ define('TreeEvents', ['TreeDB', 'TreeController'], function(TreeDB, TreeControll
                 e.stopPropagation();
                 if (e.target.nodeName == 'I') {
                     if (e.target.getAttribute('class').indexOf('folder') > -1) {
-                        treeEvents.toggle(this);
+                        // console.log(e.target);
+                        treeEvents.toggle(e.target);
+                        //rebuild.call(this);
                     }
-                    if (e.target.getAttribute('class').indexOf('trash') > -1) {
-                        if (confirm('Are you shure?')) {
-                            treeEvents.delete(this);
-                        }
-                    }
+                //     if (e.target.getAttribute('class').indexOf('trash') > -1) {
+                //         if (confirm('Are you shure?')) {
+                //             treeEvents.delete(e.target);
+                //         }
+                //     }
                     if (e.target.getAttribute('class').indexOf('plus') > -1) {
                         var title = prompt("Please enter title", "Element title");
 
                         if (title != null) {
-                            treeEvents.add(this, title);
+                            treeEvents.add(e.target, title);
+                            rebuild.call(this);
                         }
                     }
                 }
             });
 
-            elements[i].querySelector('span').addEventListener('dblclick', function() {
-                treeEvents.editor(this);
+            elements[i].querySelector('.text').addEventListener('dblclick', function(e) {
+                e.stopPropagation();
+                if (e.target.getAttribute('class').indexOf('text') > -1) {
+                    treeEvents.editor(this);
+                }
             });
         }
     }
@@ -79,33 +84,14 @@ define('TreeEvents', ['TreeDB', 'TreeController'], function(TreeDB, TreeControll
         var that = this,
             el = 'fa fa-folder',
             elOpen = '-open',
-            parentEl = element.parentNode,
-            childData = [];
-
-        if (element.querySelector('ul').getAttribute('data-parent') == element.getAttribute('data-id')) {
-            if (element.querySelector('ul').innerHTML.length > 0) {
-                element.querySelector('ul').innerHTML = '';
-            } else {
-                var children = this.treeDB.get(element.querySelector('ul').getAttribute('data-parent')).children;
-                for (var i = 0; i < children.length; i++) {
-                    childData.push(this.treeDB.get(children[i]));
-                }
-                this.tree.render({
-                    id: 'tree-element',
-                    data: childData,
-                    complete: function(childEl) {
-                        element.querySelector('ul').insertAdjacentHTML('beforeend', childEl);
-                        that.create(element.querySelector('ul'));
-                    }
-                });
-            }
-        }
-        if (element.querySelector('i').getAttribute('class').indexOf(elOpen) > -1) {
-            element.classList.remove('open');
-            element.querySelector('i').setAttribute('class', el);
+            parentEl = element.parentNode;
+            console.log(parentEl);
+        if (parentEl.querySelector('i.fa-folder-open')) {
+            parentEl.classList.remove('open');
+            parentEl.querySelector('i.fa-folder-open').setAttribute('class', el);
         } else {
-            element.classList.add('open');
-            element.querySelector('i').setAttribute('class', el + elOpen);
+            parentEl.classList.add('open');
+            parentEl.querySelector('i.fa-folder').setAttribute('class', el + elOpen);
         }
     }
 

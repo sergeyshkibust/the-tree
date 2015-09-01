@@ -1,7 +1,8 @@
 <% _.each(data,function(element) { %>
     <li class="list-group-item" data-id="<%=element.id%>">
       <i class="fa fa-folder"></i>
-      <span><%=element.title%></span>
+      <span class="label label-default"><%=element.children.length%></span>
+      <span class="text"><%=element.title%></span>
       <i class="fa fa-plus"></i>
       <i class="fa fa-trash"></i>
       <ul class="list-group" data-parent="<%=element.id%>"></ul>
