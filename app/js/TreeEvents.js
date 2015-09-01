@@ -20,13 +20,13 @@ define('TreeEvents', ['TreeDB', 'ModalCtrlr'], function(TreeDB, ModalCtrlr) {
                         rebuild.call(this);
                     }
                     if (e.target.getAttribute('class').indexOf('trash') > -1) {
-                        that.modal.confirm(function(){
+                        that.modal.confirm(function() {
                             that.treeDB.remove(e.target.parentNode.getAttribute('data-id'));
                             rebuild.call(this);
                         });
                     }
                     if (e.target.getAttribute('class').indexOf('plus') > -1) {
-                        that.modal.prompt(function(title){
+                        that.modal.prompt(function(title) {
                             if (title) {
                                 that.add(e.target, title);
                                 rebuild.call(this);
@@ -38,7 +38,7 @@ define('TreeEvents', ['TreeDB', 'ModalCtrlr'], function(TreeDB, ModalCtrlr) {
 
             elements[i].querySelector('.text').addEventListener('dblclick', function(e) {
                 e.stopPropagation();
-                if (e.target.getAttribute('class').indexOf('text') > -1) {
+                if (e.target.getAttribute('class') != null && e.target.getAttribute('class').indexOf('text') > -1) {
                     that.editor(this);
                 }
             });

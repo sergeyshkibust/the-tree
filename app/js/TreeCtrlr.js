@@ -19,7 +19,7 @@ define('TreeCtrlr', ['underscore', 'ApiCtrlr', 'TreeDB', 'TreeEvents'], function
                 document.getElementById('wrapper').innerHTML = '';
                 document.getElementById('wrapper').insertAdjacentHTML('afterbegin', template);
                 that.setupChilds(document.getElementById('wrapper'));
-                that.treeEvents.create(document.getElementById('wrapper'), function(){
+                that.treeEvents.create(document.getElementById('wrapper'), function() {
                     that.setup();
                 });
             }
@@ -34,7 +34,7 @@ define('TreeCtrlr', ['underscore', 'ApiCtrlr', 'TreeDB', 'TreeEvents'], function
         for (var i = 0; i < childElements.length; i++) {
             var parent = parseInt(childElements[i].getAttribute('data-parent')),
                 parentEl = childElements[i];
-            if(parent > 0) {
+            if (parent > 0) {
                 var childData = that.treeDB.getByParent(parent);
                 that.render({
                     id: 'tree-element',
@@ -59,9 +59,9 @@ define('TreeCtrlr', ['underscore', 'ApiCtrlr', 'TreeDB', 'TreeEvents'], function
     };
 
     //Options: {
-    //	id: template-name,
-    //	data: {template-data: ''},
-    //	completed: function(tpl){ template-with-data }
+    //  id: template-name,
+    //  data: {template-data: ''},
+    //  completed: function(tpl){ template-with-data }
     //}
     TreeCtrlr.prototype.render = function(options) {
         var that = this;

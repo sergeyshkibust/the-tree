@@ -112,3 +112,11 @@ body {
   width: 20px;
   padding-bottom: 5px;
 }
+
+.prompt .text,
+.confirm .text {
+	font-size: xx-large;
+	width: 100%;
+	text-align: center;
+	padding-top: 6%;
+}
