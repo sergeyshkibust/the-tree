@@ -27,12 +27,11 @@ define('TreeDB', function() {
 
     TreeDB.prototype.remove = function(id) {
         var el = this.get(id);
-
         var elements = this.getAll();
         var newElements = [];
 
         for (var i = 0; i < elements.length; i++) {
-            if (elements[i].children.indexOf(el.id) > -1) {
+            if (typeof el != 'undefined' && elements[i].children.indexOf(el.id) > -1) {
                 elements[i].children.splice(elements[i].children.indexOf(el.id), 1);
             }
             if (elements[i].id != id && elements[i].parent != id) {

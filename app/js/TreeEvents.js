@@ -1,36 +1,37 @@
-define('TreeEvents', ['TreeDB'], function(TreeDB) {
+define('TreeEvents', ['TreeDB', 'ModalCtrlr'], function(TreeDB, ModalCtrlr) {
     "use strict";
 
     function TreeEvents() {
         console.log('TreeEvents loaded');
         this.treeDB = new TreeDB();
+        this.modal = new ModalCtrlr();
     };
 
     TreeEvents.prototype.create = function(parent, rebuild) {
         var elements = parent.querySelectorAll('li.list-group-item');
         var that = this;
         for (var i = 0; i < elements.length; i++) {
-            elements[i].removeEventListener();
+            elements[i].removeEventListener('click');
             elements[i].addEventListener('click', function(e) {
                 e.stopPropagation();
                 if (e.target.nodeName == 'I') {
-                    if (e.target.getAttribute('class').indexOf('folder') > -1) {
+                    if (e.target.getAttribute('class').indexOf('fa-caret-square') > -1) {
                         that.toggle(e.target);
                         rebuild.call(this);
                     }
                     if (e.target.getAttribute('class').indexOf('trash') > -1) {
-                        if (confirm('Are you shure?')) {
+                        that.modal.confirm(function(){
                             that.treeDB.remove(e.target.parentNode.getAttribute('data-id'));
                             rebuild.call(this);
-                        }
+                        });
                     }
                     if (e.target.getAttribute('class').indexOf('plus') > -1) {
-                        var title = prompt("Please enter title", "Element title");
-
-                        if (title != null) {
-                            that.add(e.target, title);
-                            rebuild.call(this);
-                        }
+                        that.modal.prompt(function(title){
+                            if (title) {
+                                that.add(e.target, title);
+                                rebuild.call(this);
+                            }
+                        });
                     }
                 }
             });
@@ -52,6 +53,7 @@ define('TreeEvents', ['TreeDB'], function(TreeDB) {
             "id": ++last.id,
             "title": title,
             "parent": parseInt(element.parentNode.querySelector('ul').getAttribute('data-parent')),
+            "state": 0,
             "children": []
         });
     }
@@ -81,16 +83,13 @@ define('TreeEvents', ['TreeDB'], function(TreeDB) {
 
     TreeEvents.prototype.toggle = function(element) {
         var that = this,
-            el = 'fa fa-folder',
-            elOpen = '-open',
             parentEl = element.parentNode;
-
-        if (parentEl.querySelector('i.fa-folder-open')) {
-            that.treeDB.change('state', parentEl.getAttribute('data-id'), 0);
-            parentEl.querySelector('i.fa-folder-open').setAttribute('class', el);
-        } else {
+        if (parentEl.querySelector('i').getAttribute('class').indexOf('fa-caret-square-o-right') > -1) {
             that.treeDB.change('state', parentEl.getAttribute('data-id'), 1);
-            parentEl.querySelector('i.fa-folder').setAttribute('class', el + elOpen);
+            parentEl.querySelector('i.fa-caret-square-o-right').setAttribute('class', 'fa fa-caret-square-o-down');
+        } else {
+            that.treeDB.change('state', parentEl.getAttribute('data-id'), 0);
+            parentEl.querySelector('i.fa-caret-square-o-down').setAttribute('class', 'fa fa-caret-square-o-right');
         }
     }
 

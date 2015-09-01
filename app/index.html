@@ -22,7 +22,24 @@
 </head>
 
 <body>
-    <div id="wrapper">
+    <div id="wrapper" class="wrapper">
+    </div>
+    <div class="confirm">
+        <div class="text">Are you sure?</div>
+        <div class="buttons">
+            <input type="button" id="cok" value="Ok" class="ok"/>
+            <input type="button" id="ccancel" value="Cancel" class="cancel"/>
+        </div>
+    </div>
+    <div class="prompt">
+        <div class="text">
+            Enter Title for new element.
+            <input type="text" id="text" value=""/>
+        </div>
+        <div class="buttons">
+            <input type="button" id="pok" value="Ok" class="ok"/>
+            <input type="button" id="pcancel" value="Cancel" class="cancel"/>
+        </div>
     </div>
     <script data-main="/app" src="./js/require.js"></script>
     <script>

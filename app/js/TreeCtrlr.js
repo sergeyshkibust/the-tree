@@ -1,15 +1,15 @@
-define('TreeController', ['underscore', 'ApiCtrlr', 'TreeDB', 'TreeEvents'], function(_, ApiCtrlr, TreeDB, TreeEvents) {
+define('TreeCtrlr', ['underscore', 'ApiCtrlr', 'TreeDB', 'TreeEvents'], function(_, ApiCtrlr, TreeDB, TreeEvents) {
     "use strict";
 
-    function TreeController() {
-        console.log('TreeController loaded');
+    function TreeCtrlr() {
+        console.log('TreeCtrlr loaded');
         this.api = new ApiCtrlr();
         this.treeDB = new TreeDB();
         this.treeEvents = new TreeEvents();
         this.templates = {};
     };
 
-    TreeController.prototype.setup = function() {
+    TreeCtrlr.prototype.setup = function() {
         var that = this;
 
         this.render({
@@ -26,7 +26,7 @@ define('TreeController', ['underscore', 'ApiCtrlr', 'TreeDB', 'TreeEvents'], fun
         });
     }
 
-    TreeController.prototype.setupChilds = function(parentEls) {
+    TreeCtrlr.prototype.setupChilds = function(parentEls) {
         var that = this;
 
         var childElements = parentEls.querySelectorAll('ul.list-group');
@@ -49,7 +49,7 @@ define('TreeController', ['underscore', 'ApiCtrlr', 'TreeDB', 'TreeEvents'], fun
     }
 
 
-    TreeController.prototype.getTemplate = function(id, returnTemplate) {
+    TreeCtrlr.prototype.getTemplate = function(id, returnTemplate) {
         this.api.get({
             url: './templates/' + id + '.ejs',
             complete: function(template) {
@@ -63,7 +63,7 @@ define('TreeController', ['underscore', 'ApiCtrlr', 'TreeDB', 'TreeEvents'], fun
     //	data: {template-data: ''},
     //	completed: function(tpl){ template-with-data }
     //}
-    TreeController.prototype.render = function(options) {
+    TreeCtrlr.prototype.render = function(options) {
         var that = this;
         if (this.templates[options.id]) {
             var template = this.templates[options.id]((typeof options.data != typeof undefined) ? {
@@ -85,6 +85,6 @@ define('TreeController', ['underscore', 'ApiCtrlr', 'TreeDB', 'TreeEvents'], fun
         }
     };
 
-    return TreeController;
+    return TreeCtrlr;
 
 });

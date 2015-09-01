@@ -1,8 +1,8 @@
 require(
-    ['TreeController', 'TreeDB'],
-    function(TreeController, TreeDB) {
+    ['TreeCtrlr', 'TreeDB'],
+    function(TreeCtrlr, TreeDB) {
 
-        var tree = new TreeController();
+        var tree = new TreeCtrlr();
         var treeDB = new TreeDB();
         //Demo data
         if (treeDB.getAll().length == 0) {

@@ -13,12 +13,18 @@ describe('Tree DB', function() {
                 'id': 1,
                 'title': 'Test title',
                 'parent': 0,
+                'children': [2]
+            });
+            treeDB.add({
+                'id': 2,
+                'title': 'Test title 2',
+                'parent': 1,
                 'children': []
             });
 
             var data = JSON.parse(localStorage.getItem('elements'));
 
-            if (data.length == 1) {
+            if (data.length == 2) {
                 done();
             } else {
                 throw "Not added"
@@ -30,7 +36,7 @@ describe('Tree DB', function() {
         requirejs(['TreeDB'], function(TreeDB) {
             var treeDB = new TreeDB();
 
-            treeDB.change(1, 'New title');
+            treeDB.change('title', 1, 'New title');
 
             var data = JSON.parse(localStorage.getItem('elements'));
 
@@ -54,6 +60,22 @@ describe('Tree DB', function() {
                 done();
             } else {
                 throw "Error while getting element by id"
+            }
+        });
+    });
+
+    it('get elements by parent id', function(done) {
+        requirejs(['TreeDB'], function(TreeDB) {
+            var treeDB = new TreeDB();
+
+            var testData = treeDB.getByParent(1);
+
+            var data = JSON.parse(localStorage.getItem('elements'));
+
+            if (data[1].title == testData[0].title && data[1].id == testData[0].id) {
+                done();
+            } else {
+                throw "Error while getting element by parent id"
             }
         });
     });
@@ -92,8 +114,8 @@ describe('Tree DB', function() {
 
 describe('Tree Controller', function() {
     it('Get template by id', function(done) {
-        requirejs(['TreeController'], function(TreeController) {
-            var treeController = new TreeController();
+        requirejs(['TreeCtrlr'], function(TreeCtrlr) {
+            var treeController = new TreeCtrlr();
 
             treeController.getTemplate('tree-root', function(tpl) {
                 if (tpl.indexOf('Cannot GET') == -1) {
@@ -106,8 +128,8 @@ describe('Tree Controller', function() {
     });
 
     it('Render template by id', function(done) {
-        requirejs(['TreeController'], function(TreeController) {
-            var treeController = new TreeController();
+        requirejs(['TreeCtrlr'], function(TreeCtrlr) {
+            var treeController = new TreeCtrlr();
 
             treeController.render({
                 id: 'tree-root',
